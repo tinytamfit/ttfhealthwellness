@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TinyTamFit — The TinyTam Transformation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --black:#06060a;--gold:#C9A84C;--gold-light:#E8CC7A;
+  --pink:#E8619A;--pink-light:#F4A0C4;
+  --purple:#7B4FA6;--purple-light:#A87FCC;
+  --white:#FDFAF5;--muted:rgba(253,250,245,0.6);--faint:rgba(253,250,245,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,10,0.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.04)}
+.logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--pink),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-r{display:flex;align-items:center;gap:2rem}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{font-size:0.74rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--faint);text-decoration:none;transition:color 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-btn{padding:0.52rem 1.3rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--black);border-radius:3rem;font-size:0.74rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s}
+.nav-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.35)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none}
+.o1{width:650px;height:650px;background:var(--purple);opacity:0.11;top:-200px;right:-150px;animation:ob 11s ease-in-out infinite}
+.o2{width:500px;height:500px;background:var(--pink);opacity:0.09;bottom:-150px;left:-120px;animation:ob 14s ease-in-out infinite reverse}
+.o3{width:320px;height:320px;background:var(--gold);opacity:0.07;top:38%;left:50%;margin-left:-160px;animation:ob 9s ease-in-out infinite}
+@keyframes ob{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
+.hero-inner{position:relative;z-index:2;max-width:820px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.7rem;font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.28);border-radius:3rem;padding:0.38rem 1.1rem;margin-bottom:2rem;animation:fu 0.8s ease both}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:16px;height:1px;background:var(--gold)}
+h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,6.5vw,5.8rem);line-height:1.02;font-weight:900;margin-bottom:1.6rem;animation:fu 0.8s 0.1s ease both}
+.g{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pk{background:linear-gradient(135deg,var(--pink),var(--pink-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.8;color:var(--muted);max-width:640px;margin:0 auto 2.5rem;animation:fu 0.8s 0.2s ease both}
+.hero-sub strong{color:var(--white);font-weight:600}
+.hero-cta-wrap{animation:fu 0.8s 0.3s ease both;display:flex;flex-direction:column;align-items:center;gap:0.6rem}
+.btn-hero{padding:1.1rem 2.8rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--black);border:none;border-radius:3rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;display:inline-block}
+.btn-hero:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(201,168,76,0.4)}
+.hero-sub-cta{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:var(--faint)}
+.hero-proof{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-top:3.5rem;animation:fu 0.8s 0.4s ease both}
+.hp{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--muted)}
+.hp-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* SHARED */
+.hr{height:1px;background:linear-gradient(to right,transparent,var(--gold),var(--pink),var(--purple),transparent)}
+section{padding:7rem 3rem}
+.slabel{font-size:0.67rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:0.6rem;margin-bottom:0.9rem}
+.slabel::before,.slabel::after{content:'';display:block;width:20px;height:1px;background:var(--gold)}
+.stitle{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;line-height:1.1;margin-bottom:0.8rem}
+.stitle em{font-style:italic;background:linear-gradient(135deg,var(--gold),var(--pink-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ssub{font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--muted);line-height:1.75}
+.tc{text-align:center}.tc .slabel{margin-left:auto;margin-right:auto}
+.mw{max-width:1100px;margin:0 auto}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.rev{opacity:1;transform:translateY(0);transition:opacity 0.65s,transform 0.65s}
+.rev.hidden{opacity:0;transform:translateY(18px)}
+
+/* TRANSFORMATION — what they're really buying */
+#transform{background:linear-gradient(to bottom,rgba(232,97,154,0.04),transparent)}
+.transform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:3rem}
+.tf-card{border-radius:1.4rem;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);padding:2rem 1.6rem;position:relative;overflow:hidden;transition:transform 0.3s,border-color 0.3s}
+.tf-card:hover{transform:translateY(-5px);border-color:rgba(201,168,76,0.2)}
+.tf-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.tf-card:nth-child(1)::before{background:linear-gradient(to right,var(--gold),var(--gold-light))}
+.tf-card:nth-child(2)::before{background:linear-gradient(to right,var(--pink),var(--purple-light))}
+.tf-card:nth-child(3)::before{background:linear-gradient(to right,var(--purple),var(--pink))}
+.tf-card:nth-child(4)::before{background:linear-gradient(to right,var(--gold-light),var(--pink))}
+.tf-card:nth-child(5)::before{background:linear-gradient(to right,var(--pink-light),var(--purple))}
+.tf-card:nth-child(6)::before{background:linear-gradient(to right,var(--purple-light),var(--gold))}
+.tf-ico{font-size:2.2rem;margin-bottom:1rem}
+.tf-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;color:var(--gold-light)}
+.tf-card p{font-size:0.83rem;color:var(--muted);line-height:1.65}
+
+/* STORY */
+#story{background:linear-gradient(to bottom,rgba(123,79,166,0.04),transparent)}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;margin:0 auto}
+.story-body{font-family:'Cormorant Garamond',serif;font-size:1.18rem;line-height:1.9;color:var(--muted);margin-top:1.5rem}
+.story-body p+p{margin-top:1.1rem}
+.story-body strong{color:var(--white);font-weight:600}
+.cert-badge{display:inline-flex;align-items:center;gap:0.8rem;margin-top:1.8rem;padding:0.9rem 1.4rem;border-radius:1rem;border:1px solid rgba(201,168,76,0.3);background:rgba(201,168,76,0.07)}
+.cert-ico{font-size:1.6rem}
+.cert-text strong{display:block;font-size:0.82rem;font-weight:600;color:var(--gold-light);letter-spacing:0.04em}
+.cert-text span{font-size:0.72rem;color:var(--faint);letter-spacing:0.04em}
+.story-right{display:flex;flex-direction:column;gap:1.1rem}
+.mile{display:flex;gap:1.1rem;align-items:flex-start;padding:1.3rem 1.4rem;border-radius:1rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:border-color 0.3s}
+.mile:hover{border-color:rgba(201,168,76,0.2)}
+.mile-ico{font-size:1.6rem;flex-shrink:0}
+.mile h4{font-family:'Playfair Display',serif;font-size:0.93rem;font-weight:700;margin-bottom:0.22rem}
+.mile p{font-size:0.79rem;color:var(--faint);line-height:1.5}
+.story-photo{width:100%;aspect-ratio:4/5;border-radius:2rem;border:1px solid rgba(255,255,255,0.07);position:relative;overflow:hidden}
+.story-photo::after{content:'';position:absolute;inset:-1px;border-radius:2rem;background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(232,97,154,0.2),rgba(123,79,166,0.2));z-index:-1}
+.photo-ico{font-size:4rem;opacity:0.25}
+.photo-lbl{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:var(--faint);text-align:center;padding:0 2rem}
+
+/* FOR YOU IF */
+#foryou{background:linear-gradient(to bottom,transparent,rgba(123,79,166,0.05),transparent)}
+.foryou-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:900px;margin:3rem auto 0;align-items:start}
+.fy-list{list-style:none;display:flex;flex-direction:column;gap:1rem}
+.fy-list li{display:flex;align-items:flex-start;gap:0.9rem;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--muted);line-height:1.6}
+.fy-list li::before{content:'✦';color:var(--gold);font-size:0.7rem;margin-top:0.4rem;flex-shrink:0}
+.fy-list.not li::before{content:'✕';color:rgba(255,100,100,0.6)}
+.fy-col-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:1.2rem}
+.fy-col-title.yes{color:var(--gold-light)}
+.fy-col-title.no{color:rgba(255,100,100,0.6)}
+
+/* 6 WEEKS */
+#weeks{background:linear-gradient(to bottom,transparent,rgba(232,97,154,0.04),transparent)}
+.weeks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.wk-card{border-radius:1.3rem;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);padding:1.8rem 1.5rem;transition:transform 0.3s,border-color 0.3s;position:relative;overflow:hidden}
+.wk-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,0.2)}
+.wk-num{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.wk-theme{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem}
+.wk-desc{font-size:0.8rem;color:var(--faint);line-height:1.6}
+.wk-days{margin-top:0.8rem;font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink-light);opacity:0.7}
+
+/* INCLUDED */
+.inc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem}
+.ic{padding:1.8rem 1.4rem;border-radius:1.2rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);text-align:center;transition:transform 0.3s,border-color 0.3s}
+.ic:hover{transform:translateY(-4px);border-color:rgba(201,168,76,0.18)}
+.ic-ico{font-size:2.1rem;margin-bottom:0.8rem}
+.ic h4{font-family:'Playfair Display',serif;font-size:0.93rem;font-weight:700;color:var(--gold-light);margin-bottom:0.4rem}
+.ic p{font-size:0.79rem;color:var(--faint);line-height:1.55}
+
+/* PRICING — at the bottom, after all the info */
+#pricing{background:linear-gradient(to bottom,rgba(123,79,166,0.06),rgba(232,97,154,0.04),transparent)}
+.price-card{max-width:680px;margin:3rem auto 0;border-radius:2rem;border:1px solid rgba(201,168,76,0.25);background:rgba(255,255,255,0.03);overflow:hidden;position:relative;text-align:center}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--pink),var(--purple),var(--gold));background-size:200%;animation:shim 4s linear infinite}
+@keyframes shim{0%{background-position:0%}100%{background-position:200%}}
+.price-top{padding:3rem 3rem 2rem}
+.price-tag-label{font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+.price-big{font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:0.3rem}
+.price-sub{font-size:0.82rem;color:var(--faint);margin-bottom:1.8rem}
+.price-includes{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2rem;text-align:left}
+.pi{display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:var(--muted)}
+.pi::before{content:'✓';color:var(--gold-light);font-weight:700;font-size:0.9rem;flex-shrink:0}
+.btn-enroll{display:block;width:100%;padding:1.2rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--black);border:none;border-radius:3rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;text-decoration:none;margin-bottom:1rem}
+.btn-enroll:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(201,168,76,0.4)}
+.price-guarantee{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--faint);padding-bottom:2.5rem}
+
+/* ACCESS */
+#access{background:linear-gradient(to bottom,transparent,rgba(123,79,166,0.05),transparent)}
+.access-wrap{max-width:480px;margin:0 auto;text-align:center}
+.access-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:1.8rem;padding:2.5rem 2rem;margin-top:2.5rem;position:relative;overflow:hidden}
+.access-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--purple),var(--pink),var(--gold))}
+.access-card h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.4rem}
+.access-card>p{font-size:0.82rem;color:var(--faint);line-height:1.6;margin-bottom:1.8rem}
+.ainput{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:0.8rem;padding:1rem 1.3rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.95rem;letter-spacing:0.12em;outline:none;transition:border-color 0.3s;text-align:center;margin-bottom:1rem;text-transform:uppercase}
+.ainput::placeholder{color:rgba(253,250,245,0.2);letter-spacing:0.15em}
+.ainput:focus{border-color:rgba(201,168,76,0.5)}
+.abtn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--purple),var(--pink));color:var(--white);border:none;border-radius:3rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s}
+.abtn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(123,79,166,0.4)}
+.amsg{margin-top:0.8rem;font-size:0.82rem;font-style:italic;min-height:1.1rem}
+.amsg.err{color:#ff7070}.amsg.ok{color:var(--gold-light)}
+.anote{font-size:0.7rem;color:var(--faint);margin-top:1rem;line-height:1.5}
+
+/* FOOTER */
+footer{padding:3.5rem 3rem;border-top:1px solid rgba(255,255,255,0.05);text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.2rem}
+.flogo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--pink),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ftag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.92rem;color:var(--faint)}
+.flinks{display:flex;gap:2rem;list-style:none}
+.flinks a{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);text-decoration:none;transition:color 0.3s}
+.flinks a:hover{color:var(--gold)}
+.fcopy{font-size:0.7rem;color:rgba(253,250,245,0.15)}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  section{padding:4.5rem 1.5rem}
+  .story-grid{grid-template-columns:1fr;gap:2.5rem}
+  .transform-grid,.weeks-grid{grid-template-columns:1fr 1fr}
+  .inc-grid{grid-template-columns:repeat(2,1fr)}
+  .foryou-grid{grid-template-columns:1fr;gap:2rem}
+  #hero{padding:6rem 1.5rem 4rem}
+  .price-big{font-size:3.5rem}
+  #tammy-moment>div>div:first-child{height:350px !important}
+}
+@media(max-width:500px){
+  .transform-grid,.weeks-grid{grid-template-columns:1fr}
+  .hero-proof{gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">TinyTamFit</div>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#transform">Results</a></li>
+      <li><a href="#story">Meet Tammy</a></li>
+      <li><a href="#weeks">The Program</a></li>
+      <li><a href="#pricing">Enroll</a></li>
+    </ul>
+    <a href="#access" class="nav-btn">Member Login</a>
+  </div>
+</nav>
+
+<!-- HERO — lead with the transformation, not the product -->
+<section id="hero">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">6 Weeks · ISSA Certified Coach · Real Results</div>
+    <h1>
+      <span class="g">You don't just buy a program.</span><br>
+      <span class="pk">You're investing in the<br>woman you're becoming.</span>
+    </h1>
+    <p class="hero-sub">
+      In 6 weeks you'll move differently. Stand differently. <strong>Feel</strong> differently.
+      Clothes that didn't fit, will. Energy you forgot you had, returns.
+      Confidence that's been waiting, finally shows up.
+    </p>
+    <div class="hero-cta-wrap">
+      <a href="#transform" class="btn-hero">See What's Possible →</a>
+      <span class="hero-sub-cta">No gimmicks. No quick fixes. Just Tammy and the work.</span>
+    </div>
+    <div class="hero-proof">
+      <span class="hp"><span class="hp-dot"></span>Single mom of 3</span>
+      <span class="hp"><span class="hp-dot"></span>150+ lbs lost</span>
+      <span class="hp"><span class="hp-dot"></span>20+ years training</span>
+      <span class="hp"><span class="hp-dot"></span>ISSA Certified</span>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- TRANSFORMATION — what they're actually buying -->
+<section id="transform">
+  <div class="mw">
+    <div class="tc rev">
+      <div class="slabel">Start With The End In Mind</div>
+      <h2 class="stitle">This is what <em>changes</em></h2>
+      <p class="ssub" style="max-width:560px;margin:0 auto">You're not here for a workout video. You're here because something needs to shift. Here's what 6 weeks with Tammy actually does to a woman.</p>
+    </div>
+    <div class="transform-grid">
+      <div class="tf-card rev">
+        <div class="tf-ico">👗</div>
+        <h3>You'll fit your clothes differently</h3>
+        <p>Not just smaller, shaped. The waist of your jeans will sit differently. Your shoulders will fill out a top the way you always wanted. You'll stop avoiding the mirror.</p>
+      </div>
+      <div class="tf-card rev">
+        <div class="tf-ico">⚡</div>
+        <h3>Your energy comes back</h3>
+        <p>Week 2 you'll notice it. You'll stop reaching for the third coffee. Climbing stairs won't wind you. You'll want to move, because moving feels good again.</p>
+      </div>
+      <div class="tf-card rev">
+        <div class="tf-ico">💪</div>
+        <h3>You'll see muscle definition</h3>
+        <p>The kind that makes you flex in the mirror when no one's looking. Arms with shape. A core you can feel. Legs that feel powerful under you. It's real and it happens.</p>
+      </div>
+      <div class="tf-card rev">
+        <div class="tf-ico">🧠</div>
+        <h3>Your confidence shifts</h3>
+        <p>Somewhere around Week 3, something clicks. You start walking into rooms differently. You stop apologising for taking up space. That's not a coincidence, that's what consistent movement does to a woman's mind.</p>
+      </div>
+      <div class="tf-card rev">
+        <div class="tf-ico">🌊</div>
+        <h3>You move more freely</h3>
+        <p>Bending down. Keeping up with your kids. Not aching after a long day. Your body becomes something that works <em>for</em> you, not something you're fighting against.</p>
+      </div>
+      <div class="tf-card rev">
+        <div class="tf-ico">👑</div>
+        <h3>You prove something to yourself</h3>
+        <p>Finishing something hard, that stays with you. When you complete 6 weeks, you'll know you're the kind of woman who does what she says she's going to do. That's worth more than any number on a scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- STORY + CERT -->
+<section id="story">
+  <div class="story-grid">
+    <div class="rev">
+      <div class="slabel" style="color:var(--pink)"><span style="background:var(--pink);height:1px;width:20px;display:block"></span>Meet Tammy<span style="background:var(--pink);height:1px;width:20px;display:block"></span></div>
+      <h2 class="stitle" style="margin-top:0.7rem">She's been exactly<br>where <em>you are</em></h2>
+      <div class="story-body">
+        <p>I'm Tammy, a <strong>single mother of three</strong> in my late 40s. I have been to hell and back more times than I can count. Every pregnancy. Every heartbreak. Every season of life that tried to knock me flat.</p>
+        <p>I've lost over <strong>150 pounds throughout my journey</strong>, not in one dramatic moment, but through showing up consistently when life was anything but easy. The gym was my safe space when I had nothing else.</p>
+        <p>This program isn't something I wrote from a textbook. It's everything I wish someone had handed me <strong>20 years ago</strong> when I was starting over and had no idea where to begin.</p>
+        <p>I got <strong>ISSA certified</strong> because I wanted to make sure every exercise I give you is not just effective, but safe, structured, and built for real women's bodies.</p>
+      </div>
+      <div class="cert-badge">
+        <div class="cert-ico">🏅</div>
+        <div class="cert-text">
+          <strong>ISSA Certified Fitness Trainer</strong>
+          <span>International Sports Sciences Association</span>
+        </div>
+      </div>
+    </div>
+    <div class="story-right rev">
+      <div class="story-photo">
+        <img src="tammy.jpg" alt="Tammy" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;top:0;left:0;display:block;"/>
+      </div>
+      <div class="mile"><div class="mile-ico">💪</div><div><h4>20+ Years of Real Experience</h4><p>Not textbook knowledge. Lived, sweat-earned, hard-won wisdom from someone who's done it herself.</p></div></div>
+      <div class="mile"><div class="mile-ico">🔥</div><div><h4>Mind & Body Together</h4><p>Workouts, nutrition, breathwork, stretching, because transformation is never just physical.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- IS THIS FOR YOU -->
+<section id="foryou">
+  <div class="mw">
+    <div class="tc rev">
+      <div class="slabel">Honest Truth</div>
+      <h2 class="stitle">This program is <em>for you</em> if...</h2>
+    </div>
+    <div class="foryou-grid">
+      <div class="rev">
+        <div class="fy-col-title yes">✦ This IS for you</div>
+        <ul class="fy-list">
+          <li>You've started and stopped more times than you can count, and you're ready to actually finish something</li>
+          <li>You want to feel strong, not just look it</li>
+          <li>You're a busy woman, a mom, working, juggling everything, and you need something that works around your real life</li>
+          <li>You're done with extreme diets and punishment workouts</li>
+          <li>You want someone who's lived it guiding you, not a 25-year-old with a six pack who's never had to rebuild</li>
+          <li>You believe you deserve to feel incredible in your body</li>
+        </ul>
+      </div>
+      <div class="rev">
+        <div class="fy-col-title no">✕ This isn't for you if...</div>
+        <ul class="fy-list not">
+          <li>You're looking for a magic fix, 6 weeks requires actual commitment</li>
+          <li>You want someone to do the work for you</li>
+          <li>You're not open to changing how you eat and move</li>
+          <li>You expect overnight results without showing up consistently</li>
+        </ul>
+        <div style="margin-top:1.5rem;padding:1.2rem 1.4rem;border-radius:1rem;border:1px solid rgba(201,168,76,0.2);background:rgba(201,168,76,0.05)">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--muted);line-height:1.7">"Weight loss isn't magic, it's mathematics. And transformation isn't a moment, it's a decision you make every single day. I'll show you how." <strong style="color:var(--gold-light);font-style:normal">— Tammy</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- 6 WEEKS BREAKDOWN -->
+<section id="weeks">
+  <div class="mw">
+    <div class="tc rev">
+      <div class="slabel">The Program</div>
+      <h2 class="stitle">6 weeks. 4 days a week.<br><em>Total transformation.</em></h2>
+      <p class="ssub" style="max-width:520px;margin:0 auto">Every muscle group. Every week. Built to progress, so your body keeps changing from Day 1 through Day 24.</p>
+    </div>
+    <div class="weeks-grid">
+      <div class="wk-card rev"><div class="wk-num">Week 1</div><div class="wk-theme">Foundation</div><div class="wk-desc">Learn your movement patterns. Build your base. Set the tone for everything ahead. This week is about starting right, not starting fast.</div><div class="wk-days">4 workout days</div></div>
+      <div class="wk-card rev"><div class="wk-num">Week 2</div><div class="wk-theme">Activate</div><div class="wk-desc">Intensity rises. Muscle engagement deepens. Your body starts to respond and you start to feel it, in a good way.</div><div class="wk-days">4 workout days</div></div>
+      <div class="wk-card rev"><div class="wk-num">Week 3</div><div class="wk-theme">Build</div><div class="wk-desc">Progressive overload kicks in. Strength and endurance climb together. Week 3 is where belief starts to kick in.</div><div class="wk-days">4 workout days</div></div>
+      <div class="wk-card rev"><div class="wk-num">Week 4</div><div class="wk-theme">Push</div><div class="wk-desc">You've earned this. Heavier, harder, smarter. This is where the real change happens, and you'll know it while it's happening.</div><div class="wk-days">4 workout days</div></div>
+      <div class="wk-card rev"><div class="wk-num">Week 5</div><div class="wk-theme">Sculpt</div><div class="wk-desc">Refine the shape. Target the details. Your confidence is showing in every session. People around you are starting to notice.</div><div class="wk-days">4 workout days</div></div>
+      <div class="wk-card rev"><div class="wk-num">Week 6</div><div class="wk-theme">Transform</div><div class="wk-desc">The finale. Full body. Full power. You finish this a completely different woman, and you will know it the moment you're done.</div><div class="wk-days">4 workout days</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- WHAT'S INSIDE -->
+<section id="included">
+  <div class="mw">
+    <div class="tc rev">
+      <div class="slabel">What's Inside</div>
+      <h2 class="stitle">Everything you need.<br><em>Nothing you don't.</em></h2>
+    </div>
+    <div class="inc-grid">
+      <div class="ic rev"><div class="ic-ico">🎥</div><h4>120+ Video Workouts</h4><p>Over 120 guided workout videos across 6 weeks, 4 workout days per week, 5–7 exercises per session, all with Tammy walking you through every single rep.</p></div>
+      <div class="ic rev"><div class="ic-ico">🥗</div><h4>Nutrition Guidance</h4><p>Tammy's real-life approach. Calorie calculator, macro targets, full meal plan, and a food guide that includes healthy sweets because life has dessert.</p></div>
+      <div class="ic rev"><div class="ic-ico">🌬️</div><h4>10 Breathwork Sessions</h4><p>Guided live-countdown breathwork to reduce cortisol, sharpen focus, and support recovery. Built into every week of the program.</p></div>
+      <div class="ic rev"><div class="ic-ico">🧘</div><h4>Stretching Library</h4><p>Full mobility routines to keep you injury-free, improve flexibility, and make you feel incredible throughout all 6 weeks.</p></div>
+      <div class="ic rev"><div class="ic-ico">📊</div><h4>Progress Tracking</h4><p>Log your weight, measurements, and how you feel week by week. Watch the numbers and the mindset shift in real time.</p></div>
+      <div class="ic rev"><div class="ic-ico">🔥</div><h4>Calorie Calculator</h4><p>Know your exact daily calorie target, on training days and rest days. Because weight loss is mathematics, not mystery.</p></div>
+      <div class="ic rev"><div class="ic-ico">☁️</div><h4>Cloud Saved Progress</h4><p>Log in from any device, phone, tablet, laptop, and your progress, streak, and data are always waiting for you.</p></div>
+      <div class="ic rev"><div class="ic-ico">♾️</div><h4>Lifetime Access</h4><p>One payment. Keep it forever. Come back after baby number two, or whenever you need a reset. It's yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- TAMMY PHOTO 2 — emotional punch before price -->
+<section id="tammy-moment" style="padding:5rem 3rem;position:relative;overflow:hidden">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div style="position:relative;height:560px;border-radius:2rem;overflow:hidden;background:#111">
+      <img src="tammy-2.jpg" alt="Tammy" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;top:0;left:0;display:block;"/>
+      <div style="position:absolute;bottom:1.5rem;left:1.5rem;background:rgba(6,6,10,0.85);backdrop-filter:blur(8px);border:1px solid rgba(201,168,76,0.3);border-radius:1rem;padding:0.9rem 1.2rem">
+        <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--pink-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1">150+ lbs lost</div>
+        <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--faint);margin-top:0.2rem">Over 20 years of showing up</div>
+      </div>
+    </div>
+    <div>
+      <div class="slabel">Before You Decide</div>
+      <h2 class="stitle" style="margin-top:0.8rem">This is what <em>showing up</em> looks like.</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;line-height:1.85;color:var(--muted);margin-top:1rem">Three kids. Over 150 pounds lost. More than 20 years of showing up when life made it hard. This isn't a before and after story — it's an ongoing one.</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;line-height:1.85;color:var(--muted);margin-top:1rem">I built this program so you don't have to figure it out alone. So you can start right, with someone who has actually lived it.</p>
+      <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--gold-light);margin-top:1.5rem">— Tammy</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING — at the bottom, after all value has been established -->
+<section id="pricing">
+  <div class="mw">
+    <div class="tc rev">
+      <div class="slabel">Ready To Begin</div>
+      <h2 class="stitle">One investment.<br><em>Lifetime results.</em></h2>
+      <p class="ssub" style="max-width:500px;margin:0 auto">Everything above. For less than a single session with a personal trainer. Tammy built this so that no woman feels priced out of her own transformation.</p>
+    </div>
+    <div class="price-card rev">
+      <div class="price-top">
+        <div class="price-tag-label">The TinyTam Transformation, Full Program</div>
+        <div class="price-big">$49.99</div>
+        <div class="price-sub">One-time payment · Lifetime access · Start immediately after purchase</div>
+        <div class="price-includes">
+          <div class="pi">120+ guided workout videos (6 weeks · 4 days/week · 5–7 exercises per session)</div>
+          <div class="pi">Nutrition guidance, meal plan & calorie calculator</div>
+          <div class="pi">10 live-countdown breathwork sessions</div>
+          <div class="pi">Full stretching & mobility library</div>
+          <div class="pi">Progress tracker, weight, measurements & goals</div>
+          <div class="pi">Cloud-saved account, access from any device</div>
+          <div class="pi">Lifetime access, yours to keep forever</div>
+        </div>
+        <a href="https://buy.stripe.com/eVq9AT2XS1NNfRAg3M2Fa00" target="_blank" class="btn-enroll">Yes, I'm Starting My Transformation →</a>
+        <div class="price-guarantee">🔒 Secure checkout via Stripe · Your investment is protected</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- MEMBER ACCESS -->
+<section id="access">
+  <div class="access-wrap">
+    <div class="tc rev">
+      <div class="slabel">Already Enrolled?</div>
+      <h2 class="stitle">Access your <em>program</em></h2>
+      <p class="ssub">Enter the passcode from your welcome email to get started.</p>
+    </div>
+    <div class="access-card rev">
+      <h3>Member Login</h3>
+      <p>Enter your passcode below, you'll then create or log into your account to access your full 6-week program.</p>
+      <input type="text" class="ainput" id="codeIn" placeholder="ENTER YOUR PASSCODE" maxlength="24" autocomplete="off"/>
+      <button class="abtn" onclick="doCode()">Unlock My Program →</button>
+      <p class="amsg" id="codeMsg"></p>
+      <p class="anote">No passcode? Purchase above, it arrives in your inbox within minutes.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo">TinyTamFit</div>
+  <p class="ftag">"The gym is my safe space, and now it can be yours too."</p>
+  <ul class="flinks">
+    <li><a href="#transform">Results</a></li>
+    <li><a href="#story">Meet Tammy</a></li>
+    <li><a href="#weeks">The Program</a></li>
+    <li><a href="#pricing">Enroll</a></li>
+    <li><a href="#access">Member Login</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#620a070e0e0d22160b0c1b16030f040b164c010d0f">Contact</a></li>
+  </ul>
+  <p class="fcopy">© 2025 TinyTamFit · ISSA Certified · All rights reserved · Built with love & sweat 🖤</p>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){obs.unobserve(x.target)}})},{threshold:0.08});
+document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+const CODES=['TTF26ACCESS'];
+function doCode(){
+  const v=document.getElementById('codeIn').value.trim().toUpperCase();
+  const m=document.getElementById('codeMsg');
+  if(!v){m.className='amsg err';m.textContent='Please enter your passcode.';return}
+  if(CODES.includes(v)){
+    m.className='amsg ok';
+    m.textContent='✨ Code accepted! Taking you to your program...';
+    setTimeout(()=>{ window.location.href='member-portal.html'; },1400);
+  } else {
+    m.className='amsg err';
+    m.textContent="That code doesn't match. Check your email and try again.";
+  }
+}
+document.getElementById('codeIn').addEventListener('keydown',e=>{if(e.key==='Enter')doCode()});
+</script> 
